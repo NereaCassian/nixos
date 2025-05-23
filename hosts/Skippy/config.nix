@@ -46,15 +46,17 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
+  virtualisation.docker.enable = true;
   users.users.sigterm = {
     isNormalUser = true;
     description = "SIGTERM";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
       kdePackages.kate
     ];
   };
   programs.zsh.enable = true;
+  programs.direnv.enable = true;
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
     users = {

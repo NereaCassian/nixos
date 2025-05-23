@@ -14,6 +14,8 @@
     vesktop
     ghostty
     google-cloud-sdk
+    tfswitch
+    fnm
   ];
   home.file = {
     ".ssh/config".source = ./dots/.ssh/config;
