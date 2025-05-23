@@ -23,6 +23,7 @@
   home.sessionVariables = {
     EDITOR = "cursor";
     NIX_CONFIG_PATH = "/home/sigterm/Documents/nixos";
+    EMAIL = "nerea@sigterm.vodka";
   };
   programs.zsh = {
     enable = true;
