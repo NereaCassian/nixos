@@ -10,7 +10,6 @@
 	  code-cursor
 	  wget
 	  curl
-	  _1password-gui
     vesktop
     ghostty
     google-cloud-sdk

@@ -69,11 +69,18 @@
       "sigterm" = import ./home.nix;
     };
   };
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [ "sigterm" ];
+  };
   programs.firefox.enable = true;
   nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [];
+  environment.systemPackages = with pkgs; [
+    _1password
+    _1password-gui
+  ];
   networking.firewall.allowedTCPPorts = [22];
   networking.firewall.allowedUDPPorts = [];
-
   system.stateVersion = "24.11"; 
 }
