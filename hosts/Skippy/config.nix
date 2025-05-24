@@ -47,10 +47,16 @@
     pulse.enable = true;
   };
   virtualisation.docker.enable = true;
+  sops = {
+    defaultSopsFile = ../../secrets/sigtermPassword.yaml;
+    age.keyFile = "/home/sigterm/.config/sops/age/keys.txt";
+    secrets.user_password = {};
+  };
   users.users.sigterm = {
     isNormalUser = true;
     description = "SIGTERM";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
+    hashedPasswordFile = config.sops.secrets.user_password.path;
     packages = with pkgs; [
       kdePackages.kate
     ];

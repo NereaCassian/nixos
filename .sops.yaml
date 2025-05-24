@@ -1,0 +1,5 @@
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - age1jtdtaytxrg8md4277qyjfd6wq6n7dw96lrxv8qrlp95k3eeugd2qvr2rnt
