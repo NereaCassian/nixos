@@ -13,10 +13,12 @@
   outputs = { self, nixpkgs, ... }@inputs: 
   let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+    };
   in
   {
-    # Custom packages
     packages.${system} = {
       endpoint-verification = pkgs.callPackage ./packages/endpoint-verification.nix {};
     };

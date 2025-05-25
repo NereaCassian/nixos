@@ -1,4 +1,4 @@
-{ config, pkgs, inputs,  ... }:
+{ config, pkgs, inputs, self, ... }:
 
 {
   imports =
@@ -47,8 +47,6 @@
     pulse.enable = true;
   };
   
-  # Enable Google Endpoint Verification
-  services.endpoint-verification.enable = true;
   
   virtualisation.docker.enable = true;
   sops = {
@@ -81,6 +79,7 @@
   environment.systemPackages = with pkgs; [
     _1password
     _1password-gui
+    self.packages.${pkgs.system}.endpoint-verification
   ];
   networking.firewall.allowedTCPPorts = [22];
   networking.firewall.allowedUDPPorts = [];
