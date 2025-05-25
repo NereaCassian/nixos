@@ -5,7 +5,6 @@
     [
       ./hardware-configuration.nix
       inputs.home-manager.nixosModules.default
-      ../../modules/endpoint-verification-simple.nix
     ];
 
   # Bootloader.
