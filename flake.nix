@@ -10,9 +10,19 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
+  outputs = { self, nixpkgs, ... }@inputs: 
+  let
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+  in
+  {
+    # Custom packages
+    packages.${system} = {
+      endpoint-verification = pkgs.callPackage ./packages/endpoint-verification.nix {};
+    };
+
     nixosConfigurations.skippy = nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs;};
+      specialArgs = {inherit inputs self;};
       modules = [
         ./hosts/Skippy/config.nix
         inputs.home-manager.nixosModules.default
