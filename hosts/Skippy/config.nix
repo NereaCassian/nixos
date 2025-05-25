@@ -4,7 +4,8 @@
   imports =
     [
       ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default	
+      inputs.home-manager.nixosModules.default
+      ../../modules/endpoint-verification-simple.nix
     ];
 
   # Bootloader.
@@ -46,6 +47,10 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
+  
+  # Enable Google Endpoint Verification
+  services.endpoint-verification.enable = true;
+  
   virtualisation.docker.enable = true;
   sops = {
     defaultSopsFile = ../../secrets/sigtermPassword.yaml;
@@ -57,9 +62,7 @@
     description = "SIGTERM";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     hashedPasswordFile = config.sops.secrets.user_password.path;
-    packages = with pkgs; [
-      kdePackages.kate
-    ];
+    shell = pkgs.zsh;
   };
   programs.zsh.enable = true;
   programs.direnv.enable = true;

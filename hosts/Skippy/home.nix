@@ -17,6 +17,8 @@
     fnm
     age
     sops
+    kdePackages.kate
+    google-chrome
   ];
   home.file = {
     ".ssh/config" = {
