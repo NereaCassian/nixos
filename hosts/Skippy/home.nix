@@ -19,6 +19,7 @@
     sops
     kdePackages.kate
     google-chrome
+    neofetch
   ];
   home.file = {
     ".ssh/config" = {

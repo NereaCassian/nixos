@@ -48,43 +48,48 @@ stdenv.mkDerivation rec {
     
     # Create output directories
     mkdir -p $out/bin
-    mkdir -p $out/opt/google
-    mkdir -p $out/lib/systemd/user
+    mkdir -p $out/etc/init.d
     mkdir -p $out/etc/opt/chrome/native-messaging-hosts
-    mkdir -p $out/etc/chromium/native-messaging-hosts
-    mkdir -p $out/share/applications
+    mkdir -p $out/opt/google/endpoint-verification/bin
+    mkdir -p $out/opt/google/endpoint-verification/var/lib
+    mkdir -p $out/usr/lib/mozilla/native-messaging-hosts
     
-    # Copy the main application directory
-    if [ -d opt/google/endpoint-verification ]; then
-      cp -r opt/google/endpoint-verification $out/opt/google/
-      
-      # Find and make executables
-      find $out/opt/google/endpoint-verification -type f -executable -exec chmod +x {} \;
-      
-      # Create wrapper for the main binary if it exists
-      if [ -f $out/opt/google/endpoint-verification/bin/endpoint_verification ]; then
-        makeWrapper $out/opt/google/endpoint-verification/bin/endpoint_verification $out/bin/endpoint_verification
-      fi
-    fi
-    
-    # Copy systemd service files
-    if [ -d lib/systemd ]; then
-      cp -r lib/systemd/* $out/lib/systemd/
+    # Copy init.d script
+    if [ -f etc/init.d/endpoint-verification ]; then
+      cp etc/init.d/endpoint-verification $out/etc/init.d/
+      chmod +x $out/etc/init.d/endpoint-verification
     fi
     
     # Copy Chrome native messaging configuration
-    if [ -d etc/opt/chrome/native-messaging-hosts ]; then
-      cp -r etc/opt/chrome/native-messaging-hosts/* $out/etc/opt/chrome/native-messaging-hosts/
+    if [ -f etc/opt/chrome/native-messaging-hosts/com.google.endpoint_verification.api_helper.json ]; then
+      cp etc/opt/chrome/native-messaging-hosts/com.google.endpoint_verification.api_helper.json $out/etc/opt/chrome/native-messaging-hosts/
     fi
     
-    # Copy Chromium native messaging configuration  
-    if [ -d etc/chromium/native-messaging-hosts ]; then
-      cp -r etc/chromium/native-messaging-hosts/* $out/etc/chromium/native-messaging-hosts/
+    # Copy main application files
+    if [ -d opt/google/endpoint-verification ]; then
+      # Copy binaries
+      if [ -f opt/google/endpoint-verification/bin/apihelper ]; then
+        cp opt/google/endpoint-verification/bin/apihelper $out/opt/google/endpoint-verification/bin/
+        chmod +x $out/opt/google/endpoint-verification/bin/apihelper
+      fi
+      
+      if [ -f opt/google/endpoint-verification/bin/device_state.sh ]; then
+        cp opt/google/endpoint-verification/bin/device_state.sh $out/opt/google/endpoint-verification/bin/
+        chmod +x $out/opt/google/endpoint-verification/bin/device_state.sh
+      fi
+      
+      # Copy var/lib directory
+      if [ -d opt/google/endpoint-verification/var/lib ]; then
+        cp -r opt/google/endpoint-verification/var/lib $out/opt/google/endpoint-verification/var/
+      fi
+      
+      # Create symlinks to binaries
+      ln -s $out/opt/google/endpoint-verification/bin/apihelper $out/bin/endpoint-verification-apihelper
     fi
     
-    # Copy any desktop files
-    if [ -d usr/share/applications ]; then
-      cp -r usr/share/applications/* $out/share/applications/
+    # Copy Mozilla native messaging configuration
+    if [ -f usr/lib/mozilla/native-messaging-hosts/com.google.endpoint_verification.api_helper.json ]; then
+      cp usr/lib/mozilla/native-messaging-hosts/com.google.endpoint_verification.api_helper.json $out/usr/lib/mozilla/native-messaging-hosts/
     fi
     
     runHook postInstall
@@ -99,8 +104,10 @@ stdenv.mkDerivation rec {
     # Fix hardcoded paths in native messaging host configurations
     find $out -name "*.json" -exec sed -i 's|/opt/google/endpoint-verification|'$out'/opt/google/endpoint-verification|g' {} \;
     
-    # Fix any hardcoded paths in systemd service files
-    find $out -name "*.service" -exec sed -i 's|/opt/google/endpoint-verification|'$out'/opt/google/endpoint-verification|g' {} \;
+    # Fix any hardcoded paths in init.d script
+    if [ -f $out/etc/init.d/endpoint-verification ]; then
+      sed -i 's|/opt/google/endpoint-verification|'$out'/opt/google/endpoint-verification|g' $out/etc/init.d/endpoint-verification
+    fi
   '';
 
   meta = with lib; {
@@ -122,7 +129,7 @@ stdenv.mkDerivation rec {
     homepage = "https://support.google.com/a/users/answer/9018161";
     license = licenses.unfree;
     platforms = platforms.linux;
-    maintainers = [ ];
+    maintainers = [ "me i guess" ];
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
   };
 } 
