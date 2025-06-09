@@ -20,6 +20,7 @@
     kdePackages.kate
     google-chrome
     neofetch
+    libcxx
   ];
   home.file = {
     ".ssh/config" = {
