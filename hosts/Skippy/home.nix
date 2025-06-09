@@ -39,7 +39,7 @@
     autosuggestion.enable = true;
     shellAliases = {
       ".." = "cd ..";
-      "nrebuild" = "sudo nixos-rebuild switch --flake $NIX_CONFIG_PATH/#skippy";
+      "nrebuild" = "sudo nixos-rebuild switch --upgrade --flake $NIX_CONFIG_PATH/#skippy";
     };
     oh-my-zsh = {
       enable = true;
