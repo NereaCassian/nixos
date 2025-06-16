@@ -21,6 +21,7 @@
     google-chrome
     neofetch
     libcxx
+    vscode
   ];
   home.file = {
     ".ssh/config" = {

@@ -49,17 +49,17 @@
   };
   
   
-  virtualisation.docker.enable = true;
-  sops = {
-    defaultSopsFile = ../../secrets/sigtermPassword.yaml;
-    age.keyFile = "/home/sigterm/.config/sops/age/keys.txt";
-    secrets.user_password = {};
-  };
+#   virtualisation.docker.enable = true;
+  #sops = {
+  #  defaultSopsFile = ../../secrets/sigtermPassword.yaml;
+  #  age.keyFile = "/home/sigterm/.config/sops/age/keys.txt";
+  #  secrets.user_password = {};
+  #};
   users.users.sigterm = {
     isNormalUser = true;
     description = "SIGTERM";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
-    hashedPasswordFile = config.sops.secrets.user_password.path;
+    #hashedPasswordFile = config.sops.secrets.user_password.path;
     shell = pkgs.zsh;
   };
   programs.zsh.enable = true;
