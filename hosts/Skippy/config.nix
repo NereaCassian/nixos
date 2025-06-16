@@ -11,6 +11,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "skippy"; # Define your hostname.
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -40,7 +41,7 @@
   console.keyMap = "es";
   services.printing.enable = true;
   hardware.pulseaudio.enable = false;
-   hardware.bluetooth.enable = true; 
+  hardware.bluetooth.enable = true; 
   hardware.bluetooth.powerOnBoot = true;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -51,7 +52,7 @@
   };
   
   
-#   virtualisation.docker.enable = true;
+  virtualisation.docker.enable = true;
   #sops = {
   #  defaultSopsFile = ../../secrets/sigtermPassword.yaml;
   #  age.keyFile = "/home/sigterm/.config/sops/age/keys.txt";
@@ -82,7 +83,6 @@
   environment.systemPackages = with pkgs; [
     _1password
     _1password-gui
-    self.packages.${pkgs.system}.endpoint-verification
   ];
   networking.firewall.allowedTCPPorts = [22];
   networking.firewall.allowedUDPPorts = [];

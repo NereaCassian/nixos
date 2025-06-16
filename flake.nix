@@ -20,7 +20,6 @@
   in
   {
     packages.${system} = {
-      endpoint-verification = pkgs.callPackage ./packages/endpoint-verification.nix {};
     };
 
     nixosConfigurations.skippy = nixpkgs.lib.nixosSystem {
