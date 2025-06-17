@@ -12,6 +12,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  systemd.services.fprintd = {
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "simple";
+  };
 
   networking.hostName = "skippy"; # Define your hostname.
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -34,6 +38,8 @@
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
+  services.fprintd.enable = true;
+  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-elan;
   services.xserver.xkb = {
     layout = "es";
     variant = "";

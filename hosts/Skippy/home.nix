@@ -1,6 +1,11 @@
 { config, pkgs, ... }:
-
+  let
+    gdk = pkgs.google-cloud-sdk.withExtraComponents( with pkgs.google-cloud-sdk.components; [
+      gke-gcloud-auth-plugin
+    ]);
+  in
 {
+
   nixpkgs.config.allowUnfree = true;
   home.username = "sigterm";
   home.homeDirectory = "/home/sigterm";
@@ -12,7 +17,6 @@
 	  curl
     vesktop
     ghostty
-    google-cloud-sdk
     tfswitch
     fnm
     age
@@ -22,6 +26,11 @@
     neofetch
     libcxx
     vscode
+    spotify
+    k9s
+    kubectl
+    kubectx
+    gdk
   ];
   home.file = {
     ".ssh/config" = {
@@ -41,10 +50,15 @@
     shellAliases = {
       ".." = "cd ..";
       "nrebuild" = "sudo nixos-rebuild switch --upgrade --flake $NIX_CONFIG_PATH/#skippy";
+      "ndev" = "nix develop -c $SHELL";
     };
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "sudo" "z"];
+      plugins = [ 
+        "git" 
+        "sudo" 
+        "z"
+        ];
       theme = "agnoster";
     };
   };
