@@ -31,6 +31,7 @@
     kubectl
     kubectx
     gdk
+    fzf
   ];
   home.file = {
     ".ssh/config" = {
@@ -38,6 +39,7 @@
       target = ".ssh/config_source";
       onChange = ''cat .ssh/config_source > .ssh/config && chmod 400 .ssh/config'';
     };
+    ""
   };
   home.sessionVariables = {
     EDITOR = "cursor";
@@ -59,7 +61,7 @@
         "sudo" 
         "z"
         ];
-      theme = "agnoster";
+      theme = "strug";
     };
   };
   programs.git = {
