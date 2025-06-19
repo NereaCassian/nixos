@@ -37,6 +37,7 @@
 
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
   services.fprintd.enable = true;
   services.fprintd.tod.driver = pkgs.libfprint-2-tod1-elan;
