@@ -17,7 +17,8 @@
 	  curl
     vesktop
     ghostty
-    tfswitch
+    terraform
+    terraform-ls
     fnm
     age
     sops
@@ -44,6 +45,7 @@
     EDITOR = "cursor";
     NIX_CONFIG_PATH = "/home/sigterm/Documents/nixos";
     EMAIL = "nerea@sigterm.vodka";
+    PATH="$PATH:/home/sigterm/bin";
   };
   programs.zsh = {
     enable = true;
