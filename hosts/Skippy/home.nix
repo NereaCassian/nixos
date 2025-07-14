@@ -3,6 +3,13 @@
     gdk = pkgs.google-cloud-sdk.withExtraComponents( with pkgs.google-cloud-sdk.components; [
       gke-gcloud-auth-plugin
     ]);
+    ghostty = pkgs.ghostty.overrideAttrs (_: {
+      preBuild = ''
+        shopt -s globstar
+        sed -i 's/^const xev = @import("xev");$/const xev = @import("xev").Epoll;/' **/*.zig
+        shopt -u globstar
+      '';
+    });
   in
 {
 
@@ -33,6 +40,8 @@
     kubectx
     gdk
     fzf
+    slack
+    ollama
   ];
   home.file = {
     ".ssh/config" = {
@@ -52,7 +61,7 @@
     autosuggestion.enable = true;
     shellAliases = {
       ".." = "cd ..";
-      "nrebuild" = "sudo nixos-rebuild switch --upgrade --flake $NIX_CONFIG_PATH/#skippy";
+      "nrebuild" = "sudo nix flake update && sudo nixos-rebuild switch --upgrade --flake $NIX_CONFIG_PATH/#skippy";
       "ndev" = "nix develop -c $SHELL";
     };
     oh-my-zsh = {
@@ -67,8 +76,8 @@
   };
   programs.git = {
     enable = true;
-    userName = "sigterm";
-    userEmail = "nerea@sigterm.vodka";
+    userName = "Nerea Kalandadze";
+    userEmail = "nkalandadze@kavehome.com";
   };
   programs.home-manager.enable = true;
 }

@@ -34,29 +34,61 @@
     LC_TELEPHONE = "es_ES.UTF-8";
     LC_TIME = "es_ES.UTF-8";
   };
-
-  services.xserver.enable = true;
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
-  services.desktopManager.plasma6.enable = true;
-  services.fprintd.enable = true;
-  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-elan;
-  services.xserver.xkb = {
-    layout = "es";
-    variant = "";
+  services = {
+    xserver = {
+      enable = true;
+    };
+    displayManager = {
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+      };
+    };
+    desktopManager = {
+      plasma6 = {
+        enable = true;
+      };
+    };
+    fprintd = {
+      enable = true;
+      tod.driver = pkgs.libfprint-2-tod1-elan;
+    };
+    xserver.xkb = {
+      layout = "es";
+      variant = "";
+    };
+    printing = {
+      enable = true;
+    };
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
   };
   console.keyMap = "es";
-  services.printing.enable = true;
-  hardware.pulseaudio.enable = false;
-  hardware.bluetooth.enable = true; 
-  hardware.bluetooth.powerOnBoot = true;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+
+  hardware = {
+    pulseaudio = {
+      enable = false;
+    };
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+    graphics = {
+      enable = true;
+      extraPackages = with pkgs; [
+        vpl-gpu-rt
+        intel-media-driver
+        intel-vaapi-driver
+        libvdpau-va-gl
+
+      ];
+    };
   };
+  security.rtkit.enable = true;
   
   
   virtualisation.docker.enable = true;
@@ -68,7 +100,7 @@
   users.users.sigterm = {
     isNormalUser = true;
     description = "SIGTERM";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "video" ];
     #hashedPasswordFile = config.sops.secrets.user_password.path;
     shell = pkgs.zsh;
   };
@@ -87,10 +119,14 @@
   };
   programs.firefox.enable = true;
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.packageOverrides = pkgs: {
+    intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
+  };
   environment.systemPackages = with pkgs; [
     _1password
     _1password-gui
   ];
+  environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
   networking.firewall.allowedTCPPorts = [22];
   networking.firewall.allowedUDPPorts = [];
   system.stateVersion = "24.11"; 
